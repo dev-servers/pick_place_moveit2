@@ -46,7 +46,7 @@ public:
     box.dimensions = { 0.1, 0.4, 0.1 };
 
     geometry_msgs::msg::Pose box_pose;
-    box_pose.position.x = 0.4;
+    box_pose.position.x = 0.5;
     box_pose.position.y = 0.0;
     box_pose.position.z = 0.8;
 

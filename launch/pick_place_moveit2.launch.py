@@ -39,22 +39,29 @@ def generate_launch_description():
     kinematics_yaml = load_yaml('moveit_resources_panda_moveit_config', 'config/kinematics.yaml')
     robot_description_kinematics = { 'robot_description_kinematics' : kinematics_yaml }
 
-    controllers_yaml = load_yaml('pick_place_moveit2', 'config/controllers.yaml')
-    moveit_controllers = { 'moveit_simple_controller_manager' : controllers_yaml,
-                           'moveit_controller_manager': 'moveit_simple_controller_manager/MoveItSimpleControllerManager'}
-
     ompl_planning_pipeline_config = { 'ompl' : {
         'planning_plugin' : 'ompl_interface/OMPLPlanner',
         'request_adapters' : """default_planner_request_adapters/AddTimeOptimalParameterization default_planner_request_adapters/FixWorkspaceBounds default_planner_request_adapters/FixStartStateBounds default_planner_request_adapters/FixStartStateCollision default_planner_request_adapters/FixStartStatePathConstraints""" ,
         'start_state_max_bounds_error' : 0.1 } }
     ompl_planning_yaml = load_yaml('moveit_resources_panda_moveit_config', 'config/ompl_planning.yaml')
     ompl_planning_pipeline_config['ompl'].update(ompl_planning_yaml)
+    
+    trajectory_execution = {
+        "moveit_manage_controllers": True,
+        "trajectory_execution.allowed_execution_duration_scaling": 1.2,
+        "trajectory_execution.allowed_goal_duration_margin": 0.5,
+        "trajectory_execution.allowed_start_tolerance": 0.01,
+    }
+    
+    moveit_simple_controllers_yaml = load_yaml('pick_place_moveit2', 'config/fake_controllers.yaml')
+    fake_controller = {
+        "moveit_fake_controller_manager": moveit_simple_controllers_yaml,
+        "moveit_controller_manager": "moveit_fake_controller_manager/MoveItFakeControllerManager",
+    }
 
     # MoveItCpp demo executable
     run_moveit_cpp_node = Node(name='pick_place_moveit2',
                                package='pick_place_moveit2',
-                               # TODO(henningkayser): add debug argument
-                               # prefix='xterm -e gdb --args',
                                executable='pick_place_moveit2',
                                output='screen',
                                parameters=[moveit_cpp_yaml_file_name,
@@ -62,7 +69,9 @@ def generate_launch_description():
                                            robot_description_semantic,
                                            kinematics_yaml,
                                            ompl_planning_pipeline_config,
-                                           moveit_controllers])
+                                           trajectory_execution,
+                                           fake_controller,
+                                          ],)
 
     # RViz
     rviz_config_file = get_package_share_directory('pick_place_moveit2') + "/launch/pick_place_moveit2.rviz"
@@ -88,15 +97,27 @@ def generate_launch_description():
                                  output='both',
                                  parameters=[robot_description])
 
-    # Fake joint driver
-    fake_joint_driver_node = Node(package='fake_joint_driver',
-                                  executable='fake_joint_driver_node',
-                                  # TODO(JafarAbdi): Why this launch the two nodes (controller manager and the fake joint driver) with the same name!
-                                  # name='fake_joint_driver_node',
-                                  parameters=[{'controller_name': 'panda_arm_controller'},
-                                              os.path.join(get_package_share_directory("pick_place_moveit2"), "config", "panda_controllers.yaml"),
-                                              os.path.join(get_package_share_directory("pick_place_moveit2"), "config", "start_positions.yaml"),
-                                              robot_description]
-                                  )
+    # Joint state publisher
+    joint_state_publisher = Node(
+        package="joint_state_publisher",
+        executable="joint_state_publisher",
+        name="joint_state_publisher",
+        arguments=[
+            os.path.join(
+                get_package_share_directory("moveit_resources_panda_description"),
+                "urdf/panda.urdf",
+            )
+        ],
+        output="log",
+        parameters=[{"source_list": ["/fake_controller_joint_states"]}],
+    )
 
-    return LaunchDescription([ static_tf, robot_state_publisher, rviz_node, run_moveit_cpp_node, fake_joint_driver_node ])
+    return LaunchDescription(
+        [
+            static_tf,
+            robot_state_publisher,
+            rviz_node,
+            joint_state_publisher,
+            run_moveit_cpp_node,
+        ]
+    )
