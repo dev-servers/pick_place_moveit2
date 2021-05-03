@@ -68,7 +68,7 @@ def generate_launch_description():
 
     # Trajectory Execution Functionality
     moveit_simple_controllers_yaml = load_yaml(
-        "pick_place_moveit2", "config/panda_controllers.yaml"
+        "moveit_resources_panda_moveit_config", "config/panda_controllers.yaml"
     )
     moveit_controllers = {
         "moveit_simple_controller_manager": moveit_simple_controllers_yaml,
@@ -107,7 +107,7 @@ def generate_launch_description():
 
     # RViz
     rviz_config_file = (
-        get_package_share_directory("pick_place_moveit2") + "/launch/run_move_group.rviz"
+        get_package_share_directory("run_move_group") + "/launch/run_move_group.rviz"
     )
     rviz_node = Node(
         package="rviz2",
