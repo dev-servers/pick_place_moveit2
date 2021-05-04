@@ -4,6 +4,8 @@ from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch.actions import ExecuteProcess
 from ament_index_python.packages import get_package_share_directory
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.actions import IncludeLaunchDescription
 import xacro
 
 
@@ -141,6 +143,7 @@ def generate_launch_description():
         parameters=[robot_description],
     )
 
+
     # ros2_control using FakeSystem as hardware
     ros2_controllers_path = os.path.join(
         get_package_share_directory("moveit_resources_panda_moveit_config"),
@@ -168,6 +171,7 @@ def generate_launch_description():
             )
         ]
 
+    
     # Warehouse mongodb server
     mongodb_server_node = Node(
         package="warehouse_ros_mongo",
@@ -179,6 +183,7 @@ def generate_launch_description():
         ],
         output="screen",
     )
+
 
     return LaunchDescription(
         [
