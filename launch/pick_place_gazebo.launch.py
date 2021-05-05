@@ -42,16 +42,9 @@ def generate_launch_description():
 
     # Component yaml files are grouped in separate namespaces
     robot_description_config = load_file_from_pack(
-        "/root/ws_moveit/src/pick_place_moveit2", "worlds/panda.urdf"
+        "/root/ws_moveit/src/pick_place_moveit2/panda_description", "urdf/panda.urdf"
     )
     robot_description = {"robot_description": robot_description_config}
-
-    # Publish TF
-    robot_state_publisher = Node(package='robot_state_publisher',
-                                 executable='robot_state_publisher',
-                                 name='robot_state_publisher',
-                                 output='both',
-                                 parameters=[robot_description])
     
     # Static TF
     static_tf = Node(
@@ -61,14 +54,20 @@ def generate_launch_description():
         output="log",
         arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "panda_link0"],
     )
-
+    # Publish TF
+    robot_state_publisher = Node(package='robot_state_publisher',
+                                 executable='robot_state_publisher',
+                                 name='robot_state_publisher',
+                                 output='screen',
+                                 parameters=[robot_description])
+    
     # Joint state publisher
     joint_state_publisher = Node(
         package="joint_state_publisher",
         executable="joint_state_publisher",
         name="joint_state_publisher",
         arguments=[
-            os.path.join("/root/ws_moveit/src/pick_place_moveit2", "worlds/panda.urdf"
+            os.path.join("/root/ws_moveit/src/pick_place_moveit2/panda_description", "urdf/panda.urdf"
             )
         ],
         output="log",
@@ -87,10 +86,10 @@ def generate_launch_description():
 
 
     return LaunchDescription([
+		static_tf,
         gazebo,
         robot_state_publisher,
-        static_tf,
-        joint_state_publisher,
         spawn_entity,
+        joint_state_publisher,
     ])
     

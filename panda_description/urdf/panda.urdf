@@ -1,34 +1,71 @@
 <?xml version="1.0" ?>
 <robot name="panda" xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <link name="panda_link0">
-        <visual>
-            <geometry>
-                <mesh filename="package://moveit_resources_panda_description/meshes/visual/link0.dae" />
+	
+	<material name="grey">
+		<color rgba="0.4 0.4 0.4 1.0" />
+	</material>
+  
+	<link name="world"/>
+	
+	<link name="panda_link0">
+		<visual>
+			<geometry>
+				<mesh filename="package://pick_place_moveit2/panda_description/meshes/visual/link0.dae" scale="1 1 1" />
             </geometry>
+            <material name="grey"/>
         </visual>
+        
         <collision>
             <geometry>
-                <mesh filename="package://moveit_resources_panda_description/meshes/collision/link0.stl" />
+                <mesh filename="package://pick_place_moveit2/panda_description/meshes/collision/link0.stl" scale="1 1 1"/>
             </geometry>
+            <material name="grey"/>
         </collision>
-    </link>
+        
+		<inertial>
+			<mass value="3.06357"/>
+			<inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+		</inertial>	
+	</link>
+	
+	<gazebo reference="panda_link0">
+		<material name="grey"/>
+		<selfCollide>True</selfCollide>
+	</gazebo>
+	
+	<joint name="panda_joint0" type="fixed">
+		<origin rpy="0 0 0" xyz="0 0 0"/>
+		<parent link="world"/>
+		<child link="panda_link0"/>
+	</joint>
+  
     <link name="panda_link1">
-        <visual>
-            <geometry>
-                <mesh filename="package://moveit_resources_panda_description/meshes/visual/link1.dae" />
+		<visual>
+			<geometry>
+				<mesh filename="package://pick_place_moveit2/panda_description/meshes/visual/link1.dae" scale="1 1 1"/>
             </geometry>
+            <material name="grey"/>
         </visual>
+        
         <collision>
             <geometry>
-                <mesh filename="package://moveit_resources_panda_description/meshes/collision/link1.stl" />
+                <mesh filename="package://pick_place_moveit2/panda_description/meshes/collision/link1.stl" scale="1 1 1"/>
             </geometry>
+            <material name="grey"/>
         </collision>
+        
         <inertial>
 			<origin rpy="0 0 0" xyz="3.875e-03 2.081e-03 -0.1750"/>
 			<mass value="4.970684"/>
 			<inertia ixx="7.0337e-01" ixy="-1.3900e-04" ixz="6.7720e-03" iyy="7.0661e-01" iyz="1.9169e-02" izz="9.1170e-03"/>
 		</inertial>
     </link>
+    
+	<gazebo reference="panda_link1">
+		<material name="grey"/>
+		<selfCollide>True</selfCollide>
+	</gazebo>
+	
     <joint name="panda_joint1" type="revolute">
         <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-2.8973" soft_upper_limit="2.8973" />
         <origin rpy="0 0 0" xyz="0 0 0.333" />
@@ -38,15 +75,16 @@
         <limit effort="87" lower="-2.9671" upper="2.9671" velocity="2.3925" />
 		<dynamics damping="10.0" friction="5.0"/>
     </joint>
+
     <link name="panda_link2">
         <visual>
             <geometry>
-                <mesh filename="package://moveit_resources_panda_description/meshes/visual/link2.dae" />
+                <mesh filename="package://pick_place_moveit2/panda_description/meshes/visual/link2.dae" />
             </geometry>
         </visual>
         <collision>
             <geometry>
-                <mesh filename="package://moveit_resources_panda_description/meshes/collision/link2.stl" />
+                <mesh filename="package://pick_place_moveit2/panda_description/meshes/collision/link2.stl" />
             </geometry>
         </collision>
         <inertial>
@@ -55,6 +93,7 @@
 			<inertia ixx="7.9620e-03" ixy="-3.9250e-03" ixz="1.0254e-02" iyy="2.8110e-02" iyz="7.0400e-04" izz="2.5995e-02"/>
 		</inertial>
     </link>
+    
     <joint name="panda_joint2" type="revolute">
         <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-1.7628" soft_upper_limit="1.7628" />
         <origin rpy="-1.57079632679 0 0" xyz="0 0 0" />
@@ -67,12 +106,12 @@
     <link name="panda_link3">
         <visual>
             <geometry>
-                <mesh filename="package://moveit_resources_panda_description/meshes/visual/link3.dae" />
+                <mesh filename="package://pick_place_moveit2/panda_description/meshes/visual/link3.dae" />
             </geometry>
         </visual>
         <collision>
             <geometry>
-                <mesh filename="package://moveit_resources_panda_description/meshes/collision/link3.stl" />
+                <mesh filename="package://pick_place_moveit2/panda_description/meshes/collision/link3.stl" />
             </geometry>
         </collision>
         <inertial>
@@ -93,12 +132,12 @@
     <link name="panda_link4">
         <visual>
             <geometry>
-                <mesh filename="package://moveit_resources_panda_description/meshes/visual/link4.dae" />
+                <mesh filename="package://pick_place_moveit2/panda_description/meshes/visual/link4.dae" />
             </geometry>
         </visual>
         <collision>
             <geometry>
-                <mesh filename="package://moveit_resources_panda_description/meshes/collision/link4.stl" />
+                <mesh filename="package://pick_place_moveit2/panda_description/meshes/collision/link4.stl" />
             </geometry>
         </collision>
         <inertial>
@@ -119,12 +158,12 @@
     <link name="panda_link5">
         <visual>
             <geometry>
-                <mesh filename="package://moveit_resources_panda_description/meshes/visual/link5.dae" />
+                <mesh filename="package://pick_place_moveit2/panda_description/meshes/visual/link5.dae" />
             </geometry>
         </visual>
         <collision>
             <geometry>
-                <mesh filename="package://moveit_resources_panda_description/meshes/collision/link5.stl" />
+                <mesh filename="package://pick_place_moveit2/panda_description/meshes/collision/link5.stl" />
             </geometry>
         </collision>
         <inertial>
@@ -145,12 +184,12 @@
     <link name="panda_link6">
         <visual>
             <geometry>
-                <mesh filename="package://moveit_resources_panda_description/meshes/visual/link6.dae" />
+                <mesh filename="package://pick_place_moveit2/panda_description/meshes/visual/link6.dae" />
             </geometry>
         </visual>
         <collision>
             <geometry>
-                <mesh filename="package://moveit_resources_panda_description/meshes/collision/link6.stl" />
+                <mesh filename="package://pick_place_moveit2/panda_description/meshes/collision/link6.stl" />
             </geometry>
         </collision>
         <inertial>
@@ -171,12 +210,12 @@
     <link name="panda_link7">
         <visual>
             <geometry>
-                <mesh filename="package://moveit_resources_panda_description/meshes/visual/link7.dae" />
+                <mesh filename="package://pick_place_moveit2/panda_description/meshes/visual/link7.dae" />
             </geometry>
         </visual>
         <collision>
             <geometry>
-                <mesh filename="package://moveit_resources_panda_description/meshes/collision/link7.stl" />
+                <mesh filename="package://pick_place_moveit2/panda_description/meshes/collision/link7.stl" />
             </geometry>
         </collision>
         <inertial>
@@ -215,24 +254,24 @@
     <link name="panda_hand">
         <visual>
             <geometry>
-                <mesh filename="package://moveit_resources_panda_description/meshes/visual/hand.dae" />
+                <mesh filename="package://pick_place_moveit2/panda_description/meshes/visual/hand.dae" />
             </geometry>
         </visual>
         <collision>
             <geometry>
-                <mesh filename="package://moveit_resources_panda_description/meshes/collision/hand.stl" />
+                <mesh filename="package://pick_place_moveit2/panda_description/meshes/collision/hand.stl" />
             </geometry>
         </collision>
     </link>
     <link name="panda_leftfinger">
         <visual>
             <geometry>
-                <mesh filename="package://moveit_resources_panda_description/meshes/visual/finger.dae" />
+                <mesh filename="package://pick_place_moveit2/panda_description/meshes/visual/finger.dae" />
             </geometry>
         </visual>
         <collision>
             <geometry>
-                <mesh filename="package://moveit_resources_panda_description/meshes/collision/finger.stl" />
+                <mesh filename="package://pick_place_moveit2/panda_description/meshes/collision/finger.stl" />
             </geometry>
         </collision>
     </link>
@@ -240,13 +279,13 @@
         <visual>
             <origin rpy="0 0 3.14159265359" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://moveit_resources_panda_description/meshes/visual/finger.dae" />
+                <mesh filename="package://pick_place_moveit2/panda_description/meshes/visual/finger.dae" />
             </geometry>
         </visual>
         <collision>
             <origin rpy="0 0 3.14159265359" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://moveit_resources_panda_description/meshes/collision/finger.stl" />
+                <mesh filename="package://pick_place_moveit2/panda_description/meshes/collision/finger.stl" />
             </geometry>
         </collision>
     </link>
@@ -265,4 +304,5 @@
         <limit effort="20" lower="0.0" upper="0.04" velocity="0.2" />
         <mimic joint="panda_finger_joint1" />
     </joint>
+
 </robot>
