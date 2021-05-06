@@ -36,5 +36,10 @@ install(DIRECTORY launch
 install(DIRECTORY config
   DESTINATION share/${PROJECT_NAME}
 )
-
+install(DIRECTORY worlds
+  DESTINATION share/${PROJECT_NAME}
+)
+install(DIRECTORY panda_description
+  DESTINATION share/${PROJECT_NAME}
+)
 ament_package()
