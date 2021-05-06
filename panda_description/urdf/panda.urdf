@@ -10,15 +10,14 @@
 		<visual>
 			<origin xyz="-0.025566 -2.88e-05 0.057332" rpy="0 0 0" />
 			<geometry>
-				<mesh filename="/root/ws_moveit/src/pick_place_moveit2/panda_description/meshes/visual/link0.dae"/>
+				<mesh filename="package://pick_place_moveit2/panda_description/meshes/visual/link0.dae"/>
             </geometry>
-            <material name="grey"/>
         </visual>
         
         <collision>
 			<origin xyz="-0.025566 -2.88e-05 0.057332" rpy="0 0 0" />
             <geometry>
-                <mesh filename="/root/ws_moveit/src/pick_place_moveit2/panda_description/meshes/collision/link0.stl"/>
+                <mesh filename="package://pick_place_moveit2/panda_description/meshes/collision/link0.stl"/>
             </geometry>
         </collision>
 		
@@ -28,7 +27,12 @@
 			<inertia ixx="0.00782229414331" ixy="-1.56191622996e-05" ixz="-0.00126005738123" iyy="0.0109027971813" iyz="1.08233858202e-05" izz="0.0102355503949" />
 		</inertial>
 	</link>
-
+	<gazebo reference="panda_link0">
+        <material>Gazebo/White</material>
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+        <selfCollide>True</selfCollide>
+    </gazebo>
 	<joint name="panda_joint0" type="fixed">
 		<origin rpy="0 0 0" xyz="0 0 0"/>
 		<parent link="world"/>

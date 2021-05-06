@@ -48,11 +48,13 @@ def generate_launch_description():
     robot_description = {"robot_description": robot_description_config}
     install_dir = get_package_prefix('pick_place_moveit2')
 	
-    '''if 'GAZEBO_MODEL_PATH' in os.environ:
-        os.environ['GAZEBO_MODEL_PATH'] =  os.environ['GAZEBO_MODEL_PATH'] + ':' + install_dir + '/share' 
+    if 'GAZEBO_MODEL_PATH' in os.environ:
+        os.environ['GAZEBO_MODEL_PATH'] =  os.environ['GAZEBO_MODEL_PATH'] + ':' + install_dir + '/share'
     else:
         os.environ['GAZEBO_MODEL_PATH'] =  install_dir + "/share"
-    '''    
+        
+    print(os.environ['GAZEBO_MODEL_PATH'])
+    
     try:
         envs = {}
         for key in os.environ.__dict__["_data"]:
