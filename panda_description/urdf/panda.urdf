@@ -392,12 +392,7 @@
     <!-- end of right finger -->
     
     <!-- end of robot -->
-  
-  <!-- Add ros2 control plugin to gazebo -->
-  <gazebo>
-    <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
-  </gazebo>
-  
+    
   <!-- Add transmission to the robot arm -->
   
   <transmission name="panda_trans1">
@@ -498,5 +493,53 @@
 			<mechanicalReduction>1</mechanicalReduction>
 		</actuator>
   </transmission>
+
+  <!-- ros_control plugin -->
+  <gazebo>
+    <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+    </plugin>
+  </gazebo>
   
+  <!-- add ros2control tag --> 
+          <ros2_control name="PandaSystem" type="system">
+            <hardware>
+				<plugin>gazebo_ros2_control/GazeboSystem</plugin>
+            </hardware>
+            <joint name="panda_joint1">
+                <command_interface name="position" />
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="panda_joint2">
+                <command_interface name="position" />
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="panda_joint3">
+                <command_interface name="position" />
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="panda_joint4">
+                <command_interface name="position" />
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="panda_joint5">
+                <command_interface name="position" />
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="panda_joint6">
+                <command_interface name="position" />
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="panda_joint7">
+                <command_interface name="position" />
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+        </ros2_control>
+        
 </robot>
