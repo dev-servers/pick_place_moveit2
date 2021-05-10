@@ -392,4 +392,111 @@
     <!-- end of right finger -->
     
     <!-- end of robot -->
+  
+  <!-- Add ros2 control plugin to gazebo -->
+  <gazebo>
+    <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+  </gazebo>
+  
+  <!-- Add transmission to the robot arm -->
+  
+  <transmission name="panda_trans1">
+	<type>transmission_interface/SimpleTransmission</type>
+		<joint name="panda_joint1">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+		</joint>
+        <actuator name="panda_motor1">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+  </transmission>
+
+  <transmission name="panda_trans2">
+	<type>transmission_interface/SimpleTransmission</type>
+		<joint name="panda_joint2">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+		</joint>
+        <actuator name="panda_motor2">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+  </transmission>
+
+  <transmission name="panda_trans3">
+	<type>transmission_interface/SimpleTransmission</type>
+		<joint name="panda_joint3">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+		</joint>
+        <actuator name="panda_motor3">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+  </transmission>
+  
+    <transmission name="panda_trans4">
+	<type>transmission_interface/SimpleTransmission</type>
+		<joint name="panda_joint4">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+		</joint>
+        <actuator name="panda_motor4">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+  </transmission>
+  
+    <transmission name="panda_trans5">
+	<type>transmission_interface/SimpleTransmission</type>
+		<joint name="panda_joint5">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+		</joint>
+        <actuator name="panda_motor5">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+  </transmission>
+  
+    <transmission name="panda_trans6">
+	<type>transmission_interface/SimpleTransmission</type>
+		<joint name="panda_joint6">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+		</joint>
+        <actuator name="panda_motor6">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+  </transmission>
+  
+    <transmission name="panda_trans7">
+	<type>transmission_interface/SimpleTransmission</type>
+		<joint name="panda_joint7">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+		</joint>
+        <actuator name="panda_motor7">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+  </transmission>
+
+  <transmission name="panda_finger_trans1">
+	<type>transmission_interface/SimpleTransmission</type>
+		<joint name="panda_finger_joint1">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+		</joint>
+        <actuator name="panda_finger_motor1">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+  </transmission>
+
+  <transmission name="panda_finger_trans2">
+	<type>transmission_interface/SimpleTransmission</type>
+		<joint name="panda_finger_joint2">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+		</joint>
+        <actuator name="panda_finger_motor2">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+  </transmission>
+  
 </robot>
