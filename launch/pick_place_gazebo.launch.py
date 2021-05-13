@@ -7,6 +7,8 @@ import xacro
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.actions.execute_process import ExecuteProcess
+from launch.actions import RegisterEventHandler
+from launch.event_handlers import OnProcessExit
 
 def load_file(package_name, file_path):
     package_path = get_package_share_directory(package_name)
@@ -41,11 +43,16 @@ def load_yaml(package_name, file_path):
 
 def generate_launch_description():
 
-    # Component yaml files are grouped in separate namespaces
-    robot_description_config = load_file_from_pack(
-        "/root/ws_moveit/src/pick_place_moveit2/panda_description", "urdf/panda.urdf"
+    # planning_context
+    robot_description_config = xacro.process_file(
+        os.path.join(
+            get_package_share_directory("pick_place_moveit2"),
+            "panda_description/urdf",
+            "panda.urdf.xacro",
+        )
     )
-    robot_description = {"robot_description": robot_description_config}
+    robot_description = {"robot_description": robot_description_config.toxml()}
+    
     install_dir = get_package_prefix('pick_place_moveit2')
 	
     if 'GAZEBO_MODEL_PATH' in os.environ:
@@ -92,9 +99,17 @@ def generate_launch_description():
         output="log",
     )
     # gazebo
-    gazebo = ExecuteProcess(
+    '''gazebo = ExecuteProcess(
             cmd=['gazebo', '--verbose', '-s', 'libgazebo_ros_factory.so'], output='screen',
-            env=envs)
+            env=envs)'''
+
+    gazebo = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),
+                launch_arguments={'env': envs}.items(),
+             )
+
+
 
     # spawn robot
     spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
@@ -102,12 +117,31 @@ def generate_launch_description():
                                    '-entity', 'panda'],
                         output='screen')
 
+    load_joint_state_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_start_controller', 'joint_state_controller'],
+        output='screen'
+    )
 
+    load_joint_trajectory_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_start_controller', 'joint_trajectory_controller'],
+        output='screen'
+    )
+    
     return LaunchDescription([
-		static_tf,
-        gazebo,
-        robot_state_publisher,
-        joint_state_publisher,
-        spawn_entity,
+      RegisterEventHandler(
+          event_handler=OnProcessExit(
+              target_action=spawn_entity,
+              on_exit=[load_joint_state_controller],
+          )
+      ),
+      RegisterEventHandler(
+          event_handler=OnProcessExit(
+              target_action=load_joint_state_controller,
+              on_exit=[load_joint_trajectory_controller],
+          )
+      ),
+      gazebo,
+      robot_state_publisher,
+      static_tf,
+      spawn_entity
     ])
-
