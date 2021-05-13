@@ -123,7 +123,7 @@ def generate_launch_description():
     )
 
     load_joint_trajectory_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_start_controller', 'joint_trajectory_controller'],
+        cmd=['ros2', 'control', 'load_start_controller', 'panda_arm_controller'],
         output='screen'
     )
     
