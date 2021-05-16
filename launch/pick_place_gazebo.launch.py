@@ -42,14 +42,14 @@ def load_yaml(package_name, file_path):
 
 
 def generate_launch_description():
-
+    
     # planning_context
     robot_description_config = xacro.process_file(
         os.path.join(
             get_package_share_directory("pick_place_moveit2"),
             "panda_description/urdf",
             "panda.urdf.xacro",
-        )
+        ), mappings={"use_sim": "true"}
     )
     robot_description = {"robot_description": robot_description_config.toxml()}
     
@@ -84,7 +84,7 @@ def generate_launch_description():
     robot_state_publisher = Node(package='robot_state_publisher',
                                  executable='robot_state_publisher',
                                  name='robot_state_publisher',
-                                 output='both',
+                                 output='screen',
                                  parameters=[robot_description])
     
     # Joint state publisher
@@ -99,22 +99,14 @@ def generate_launch_description():
         output="log",
     )
     # gazebo
-    '''gazebo = ExecuteProcess(
+    gazebo = ExecuteProcess(
             cmd=['gazebo', '--verbose', '-s', 'libgazebo_ros_factory.so'], output='screen',
-            env=envs)'''
-
-    gazebo = IncludeLaunchDescription(
-                PythonLaunchDescriptionSource([os.path.join(
-                    get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),
-                launch_arguments={'env': envs}.items(),
-             )
-
-
+            env=envs)
 
     # spawn robot
     spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
                         arguments=['-topic', 'robot_description',
-                                   '-entity', 'panda'],
+                                   '-entity', 'panda_arm'],
                         output='screen')
 
     load_joint_state_controller = ExecuteProcess(
@@ -126,7 +118,7 @@ def generate_launch_description():
         cmd=['ros2', 'control', 'load_start_controller', 'panda_arm_controller'],
         output='screen'
     )
-    
+   
     return LaunchDescription([
       RegisterEventHandler(
           event_handler=OnProcessExit(
@@ -145,3 +137,5 @@ def generate_launch_description():
       static_tf,
       spawn_entity
     ])
+          
+    

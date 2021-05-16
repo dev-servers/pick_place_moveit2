@@ -50,6 +50,22 @@
                 <state_interface name="position"/>
                 <state_interface name="velocity"/>
             </joint>
+                        <joint name="panda_joint7">
+                <param name="initial_position">${initial_positions['panda_joint7']}</param>
+                <command_interface name="position" />
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="panda_finger_joint1">
+                <command_interface name="position" />
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="panda_finger_joint2">
+                <command_interface name="position" />
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
         </ros2_control>
 
     </xacro:macro>
