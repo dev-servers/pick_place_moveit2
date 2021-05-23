@@ -272,11 +272,11 @@
     <!-- end of link 7 -->
 
     <link name="panda_link8" >
-        <!--inertial>
+        <inertial>
           <origin xyz="0 0 0" rpy="0 0 0" />
           <mass value="0.45"/>
           <inertia ixx="0.3" ixy="0.0" ixz="0.0" iyy="0.3" iyz="0.0" izz="0.3" />
-        </inertial-->
+        </inertial>
     </link>
     <gazebo reference="panda_link8">
         <material>Gazebo/Grey</material>
@@ -289,10 +289,8 @@
         <parent link="panda_link7" />
         <child link="panda_link8" />
         <axis xyz="0 0 0" />
-        <dynamics damping="1.0"/>
     </joint>
     <!-- end of link8 -->
-    
     <link name="panda_hand">
         <visual>
             <geometry>
@@ -389,8 +387,6 @@
         <limit effort="20" lower="0.0" upper="0.04" velocity="0.2" />
         <mimic joint="panda_finger_joint1" />
     </joint >
-    <!-- end of right finger -->
-    
     <!-- end of robot -->
 
   <!-- ros_control plugin -->
