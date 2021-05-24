@@ -118,7 +118,11 @@ def generate_launch_description():
         cmd=['ros2', 'control', 'load_start_controller', 'panda_arm_controller'],
         output='screen'
     )
-   
+	
+    load_forward_command_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_start_controller', 'initial_arm_controller'],
+        output='screen'
+    )
     return LaunchDescription([
       RegisterEventHandler(
           event_handler=OnProcessExit(
@@ -129,9 +133,9 @@ def generate_launch_description():
       RegisterEventHandler(
           event_handler=OnProcessExit(
               target_action=load_joint_state_controller,
-              on_exit=[load_joint_trajectory_controller],
+              on_exit=[load_forward_command_controller, load_joint_trajectory_controller],
           )
-      ),
+      ),   
       gazebo,
       robot_state_publisher,
       static_tf,

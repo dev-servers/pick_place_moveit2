@@ -22,7 +22,7 @@
         <material>Gazebo/Grey</material>
         <mu1>0.2</mu1>
         <mu2>0.2</mu2>
-        <selfCollide>True</selfCollide>
+        <selfCollide>False</selfCollide>
     </gazebo>
 	<joint name="panda_joint0" type="fixed">
 		<origin rpy="0 0 0" xyz="0 0 0"/>
@@ -54,7 +54,7 @@
         <material>Gazebo/White</material>
         <mu1>0.2</mu1>
         <mu2>0.2</mu2>
-        <selfCollide>True</selfCollide>
+        <selfCollide>False</selfCollide>
     </gazebo>  
     <joint name="panda_joint1" type="revolute">
         <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-2.8973" soft_upper_limit="2.8973" />
@@ -88,7 +88,7 @@
         <material>Gazebo/White</material>
         <mu1>0.2</mu1>
         <mu2>0.2</mu2>
-        <selfCollide>True</selfCollide>
+        <selfCollide>False</selfCollide>
     </gazebo>
     <joint name="panda_joint2" type="revolute">
         <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-1.7628" soft_upper_limit="1.7628" />
@@ -122,7 +122,7 @@
         <material>Gazebo/White</material>
         <mu1>0.2</mu1>
         <mu2>0.2</mu2>
-        <selfCollide>True</selfCollide>
+        <selfCollide>False</selfCollide>
     </gazebo>  
     <joint name="panda_joint3" type="revolute">
         <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-2.8973" soft_upper_limit="2.8973" />
@@ -156,7 +156,7 @@
         <material>Gazebo/White</material>
         <mu1>0.2</mu1>
         <mu2>0.2</mu2>
-        <selfCollide>True</selfCollide>
+        <selfCollide>False</selfCollide>
     </gazebo>  
     <joint name="panda_joint4" type="revolute">
         <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-3.0718" soft_upper_limit="0.0175" />
@@ -190,7 +190,7 @@
         <material>Gazebo/White</material>
         <mu1>0.2</mu1>
         <mu2>0.2</mu2>
-        <selfCollide>True</selfCollide>
+        <selfCollide>False</selfCollide>
     </gazebo>  
     <joint name="panda_joint5" type="revolute">
         <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-2.8973" soft_upper_limit="2.8973" />
@@ -224,7 +224,7 @@
         <material>Gazebo/White</material>
         <mu1>0.2</mu1>
         <mu2>0.2</mu2>
-        <selfCollide>True</selfCollide>
+        <selfCollide>False</selfCollide>
     </gazebo> 
     <joint name="panda_joint6" type="revolute">
         <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-0.0175" soft_upper_limit="3.7525" />
@@ -258,7 +258,7 @@
         <material>Gazebo/Grey</material>
         <mu1>0.2</mu1>
         <mu2>0.2</mu2>
-        <selfCollide>True</selfCollide>
+        <selfCollide>False</selfCollide>
     </gazebo> 
     <joint name="panda_joint7" type="revolute">
         <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-2.8973" soft_upper_limit="2.8973" />
@@ -282,7 +282,7 @@
         <material>Gazebo/Grey</material>
         <mu1>0.2</mu1>
         <mu2>0.2</mu2>
-        <selfCollide>True</selfCollide>
+        <selfCollide>False</selfCollide>
     </gazebo> 
     <joint name="panda_joint8" type="fixed">
         <origin rpy="0 0 0" xyz="0 0 0.107" />
@@ -312,7 +312,7 @@
         <material>Gazebo/Grey</material>
         <mu1>0.2</mu1>
         <mu2>0.2</mu2>
-        <selfCollide>True</selfCollide>
+        <selfCollide>False</selfCollide>
     </gazebo> 
     <joint name="panda_hand_joint" type="fixed">
         <parent link="panda_link8" />
@@ -343,7 +343,7 @@
         <material>Gazebo/Grey</material>
         <mu1>0.2</mu1>
         <mu2>0.2</mu2>
-        <selfCollide>True</selfCollide>
+        <selfCollide>False</selfCollide>
     </gazebo> 
     <joint name="panda_finger_joint1" type="prismatic">
         <parent link="panda_hand" />
@@ -377,7 +377,7 @@
         <material>Gazebo/Grey</material>
         <mu1>0.2</mu1>
         <mu2>0.2</mu2>
-        <selfCollide>True</selfCollide>
+        <selfCollide>False</selfCollide>
     </gazebo> 
     <joint name="panda_finger_joint2" type="prismatic">
         <parent link="panda_hand" />

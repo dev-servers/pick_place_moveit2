@@ -137,11 +137,6 @@ def generate_launch_description():
     )
     
     return LaunchDescription([
-      IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            os.path.join(get_package_share_directory('pick_place_moveit2'), 'launch'), '/pick_place_gazebo.launch.py'
-        ]),
-      ),
-      rviz_node,
-      run_move_group_node,
+            rviz_node,
+            run_move_group_node,
     ])
