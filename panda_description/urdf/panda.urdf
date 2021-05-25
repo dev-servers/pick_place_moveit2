@@ -343,7 +343,7 @@
         <material>Gazebo/Grey</material>
         <mu1>0.2</mu1>
         <mu2>0.2</mu2>
-        <selfCollide>False</selfCollide>
+        <selfCollide>True</selfCollide>
     </gazebo> 
     <joint name="panda_finger_joint1" type="prismatic">
         <parent link="panda_hand" />
@@ -368,7 +368,7 @@
             </geometry>
         </collision>
       <inertial>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 0" rpy="0 0 3.14159265359" />
         <mass value="0.01" />
         <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1" />
       </inertial>
@@ -377,7 +377,7 @@
         <material>Gazebo/Grey</material>
         <mu1>0.2</mu1>
         <mu2>0.2</mu2>
-        <selfCollide>False</selfCollide>
+        <selfCollide>True</selfCollide>
     </gazebo> 
     <joint name="panda_finger_joint2" type="prismatic">
         <parent link="panda_hand" />

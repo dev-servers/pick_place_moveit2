@@ -22,7 +22,7 @@ panda_arm_controller:
       - panda_joint5
       - panda_joint6
       - panda_joint7
-
+      
 initial_arm_controller:
   ros__parameters:
     joints:

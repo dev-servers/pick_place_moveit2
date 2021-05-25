@@ -87,17 +87,6 @@ def generate_launch_description():
                                  output='screen',
                                  parameters=[robot_description])
     
-    # Joint state publisher
-    joint_state_publisher = Node(
-        package="joint_state_publisher",
-        executable="joint_state_publisher",
-        name="joint_state_publisher",
-        arguments=[
-            os.path.join("/root/ws_moveit/src/pick_place_moveit2/panda_description", "urdf/panda.urdf"
-            )
-        ],
-        output="log",
-    )
     # gazebo
     gazebo = ExecuteProcess(
             cmd=['gazebo', '--verbose', '-s', 'libgazebo_ros_factory.so'], output='screen',
@@ -118,11 +107,22 @@ def generate_launch_description():
         cmd=['ros2', 'control', 'load_start_controller', 'panda_arm_controller'],
         output='screen'
     )
-	
+	        
     load_forward_command_controller = ExecuteProcess(
         cmd=['ros2', 'control', 'load_start_controller', 'initial_arm_controller'],
         output='screen'
     )
+    
+    move_initial_position = ExecuteProcess(
+        cmd=['ros2', 'topic', 'pub', '-t 5', 'initial_arm_controller/commands', 'std_msgs/msg/Float64MultiArray', '{data: [0,-0.785,0,-2.356,0,1.571, 0.3]}'],
+        output='screen'
+    )
+    
+    stop_forward_command_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'switch_controllers', '--stop-controllers', 'initial_arm_controller'],
+        output='screen'
+    )
+    
     return LaunchDescription([
       RegisterEventHandler(
           event_handler=OnProcessExit(
@@ -133,9 +133,27 @@ def generate_launch_description():
       RegisterEventHandler(
           event_handler=OnProcessExit(
               target_action=load_joint_state_controller,
-              on_exit=[load_forward_command_controller, load_joint_trajectory_controller],
+              on_exit=[load_forward_command_controller],
           )
-      ),   
+      ), 
+      RegisterEventHandler(
+          event_handler=OnProcessExit(
+              target_action=load_forward_command_controller,
+              on_exit=[move_initial_position],
+          )
+      ), 
+      RegisterEventHandler(
+          event_handler=OnProcessExit(
+              target_action=move_initial_position,
+              on_exit=[stop_forward_command_controller],
+          )
+      ),
+      RegisterEventHandler(
+          event_handler=OnProcessExit(
+              target_action=stop_forward_command_controller,
+              on_exit=[load_joint_trajectory_controller],
+          )
+      ),  
       gazebo,
       robot_state_publisher,
       static_tf,

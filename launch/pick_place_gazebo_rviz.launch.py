@@ -52,7 +52,78 @@ def generate_launch_description():
         ), mappings={"use_sim": "true"}
     )
     robot_description = {"robot_description": robot_description_config.toxml()}
+    
+    install_dir = get_package_prefix('pick_place_moveit2')
+	
+    if 'GAZEBO_MODEL_PATH' in os.environ:
+        os.environ['GAZEBO_MODEL_PATH'] =  os.environ['GAZEBO_MODEL_PATH'] + ':' + install_dir + '/share'
+    else:
+        os.environ['GAZEBO_MODEL_PATH'] =  install_dir + "/share"
+        
+    print(os.environ['GAZEBO_MODEL_PATH'])
+    
+    try:
+        envs = {}
+        for key in os.environ.__dict__["_data"]:
+            key = key.decode("utf-8")
+            if (key.isupper()):
+                envs[key] = os.environ[key]
+    except Exception as e:
+        print("Error with Envs: " + str(e))
+        return None
+        
+    # Static TF
+    static_tf = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        name="static_transform_publisher",
+        output="log",
+        arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "panda_link0"],
+    )
+    # Publish TF
+    robot_state_publisher = Node(package='robot_state_publisher',
+                                 executable='robot_state_publisher',
+                                 name='robot_state_publisher',
+                                 output='screen',
+                                 parameters=[robot_description])
+    
+    # gazebo
+    gazebo = ExecuteProcess(
+            cmd=['gazebo', '--verbose', '-s', 'libgazebo_ros_factory.so'], output='screen',
+            env=envs)
 
+    # spawn robot
+    spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
+                        arguments=['-topic', 'robot_description',
+                                   '-entity', 'panda_arm'],
+                        output='screen')
+
+    load_joint_state_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_start_controller', 'joint_state_controller'],
+        output='screen'
+    )
+
+    load_joint_trajectory_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_start_controller', 'panda_arm_controller'],
+        output='screen'
+    )
+	
+    load_forward_command_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_start_controller', 'initial_arm_controller'],
+        output='screen'
+    )
+    
+    move_initial_position = ExecuteProcess(
+        cmd=['ros2', 'topic', 'pub', '-t 5', 'initial_arm_controller/commands', 'std_msgs/msg/Float64MultiArray', '{data: [0,-0.785,0,-2.356,0,1.571, 0.3]}'],
+        output='screen'
+    )
+    
+    stop_forward_command_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'switch_controllers', '--stop-controllers', 'initial_arm_controller'],
+        output='screen'
+    )
+    
+    
     robot_description_semantic_config = load_file(
         "moveit_resources_panda_moveit_config", "config/panda.srdf"
     )
@@ -135,8 +206,48 @@ def generate_launch_description():
             kinematics_yaml,
         ],
     )
-    
+
     return LaunchDescription([
-            rviz_node,
-            run_move_group_node,
+      RegisterEventHandler(
+          event_handler=OnProcessExit(
+              target_action=spawn_entity,
+              on_exit=[load_joint_state_controller],
+          )
+      ),
+      RegisterEventHandler(
+          event_handler=OnProcessExit(
+              target_action=load_joint_state_controller,
+              on_exit=[load_forward_command_controller],
+          )
+      ), 
+      RegisterEventHandler(
+          event_handler=OnProcessExit(
+              target_action=load_forward_command_controller,
+              on_exit=[move_initial_position],
+          )
+      ), 
+      RegisterEventHandler(
+          event_handler=OnProcessExit(
+              target_action=move_initial_position,
+              on_exit=[stop_forward_command_controller],
+          )
+      ),
+      RegisterEventHandler(
+          event_handler=OnProcessExit(
+              target_action=stop_forward_command_controller,
+              on_exit=[load_joint_trajectory_controller],
+          )
+      ), 
+      RegisterEventHandler(
+          event_handler=OnProcessExit(
+              target_action=load_joint_trajectory_controller,
+              on_exit=[rviz_node, run_move_group_node],
+          )
+      ),
+      gazebo,
+      robot_state_publisher,
+      static_tf,
+      spawn_entity
     ])
+          
+    
