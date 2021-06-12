@@ -457,9 +457,9 @@
         <plugin name="hokuyo_node" filename="libgazebo_ros_ray_sensor.so">
 			<ros>
 				<namespace>/panda_arm</namespace>
-				<remapping>~/out:=laser_scan</remapping>
+				<remapping>~/out:=point_cloud</remapping>
 			</ros>
-			<output_type>sensor_msgs/LaserScan</output_type>
+			<!--output_type>sensor_msgs/LaserScan</output_type-->
 			<frameName>hokuyo_link</frameName>
         </plugin>
       </sensor>

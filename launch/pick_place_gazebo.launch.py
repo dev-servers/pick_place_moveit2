@@ -73,13 +73,22 @@ def generate_launch_description():
         return None
         
     # Static TF
-    static_tf = Node(
+    static_tf_robot = Node(
         package="tf2_ros",
         executable="static_transform_publisher",
         name="static_transform_publisher",
         output="log",
         arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "panda_link0"],
     )
+
+    static_tf_laser = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        name="static_transform_publisher",
+        output="log",
+        arguments=["0.2", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "hokuyo_link"],
+    )
+       
     # Publish TF
     robot_state_publisher = Node(package='robot_state_publisher',
                                  executable='robot_state_publisher',
@@ -156,7 +165,8 @@ def generate_launch_description():
       ),  
       gazebo,
       robot_state_publisher,
-      static_tf,
+      static_tf_robot,
+      static_tf_laser,
       spawn_entity
     ])
           
