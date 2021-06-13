@@ -49,7 +49,7 @@ def generate_launch_description():
             get_package_share_directory("pick_place_moveit2"),
             "panda_description/urdf",
             "panda.urdf.xacro",
-        ), mappings={"use_sim": "true"}
+        ),
     )
     robot_description = {"robot_description": robot_description_config.toxml()}
     
@@ -76,17 +76,19 @@ def generate_launch_description():
     static_tf_robot = Node(
         package="tf2_ros",
         executable="static_transform_publisher",
-        name="static_transform_publisher",
+        name="from panda to world",
         output="log",
         arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "panda_link0"],
+        parameters = ["use_sim_time":True]
     )
 
     static_tf_laser = Node(
         package="tf2_ros",
         executable="static_transform_publisher",
-        name="static_transform_publisher",
+        name="from hokuyo laser to world",
         output="log",
         arguments=["0.2", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "hokuyo_link"],
+        parameters = ["use_sim_time":True]
     )
     # Publish TF
     robot_state_publisher = Node(package='robot_state_publisher',
@@ -100,6 +102,10 @@ def generate_launch_description():
             cmd=['gazebo', '--verbose', '-s', 'libgazebo_ros_factory.so'], output='screen',
             env=envs)
 
+    gazebo = ExecuteProcess(
+        cmd=['gazebo', '-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so'],
+        output='screen', env=envs)
+        
     # spawn robot
     spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
                         arguments=['-topic', 'robot_description',

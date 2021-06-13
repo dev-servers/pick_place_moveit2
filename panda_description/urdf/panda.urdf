@@ -466,7 +466,7 @@
   </gazebo>
   
     <!-- Hokuyo Laser Description-->  
-  <link name="mybox">
+  <!--link name="mybox">
 
     <visual>
       <origin xyz="0 0 0.5" rpy="0 0 0"/>
@@ -487,20 +487,20 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
     </inertial>
-  </link>
+  </link-->
   
-  <joint name="mybox_joint" type="fixed">
+  <!--joint name="mybox_joint" type="fixed">
     <axis xyz="0 1 0" />
     <origin xyz="2 0 0" rpy="0 0 0"/>
     <parent link="world"/>
     <child link="mybox"/>
-  </joint>
+  </joint-->
   
-   <gazebo reference="mybox">
+   <!--gazebo reference="mybox">
         <material>Gazebo/Grey</material>
         <mu1>0.2</mu1>
         <mu2>0.2</mu2>
         <selfCollide>True</selfCollide>
-    </gazebo> 
+    </gazebo--> 
           
 </robot>

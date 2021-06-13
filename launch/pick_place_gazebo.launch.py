@@ -42,16 +42,15 @@ def load_yaml(package_name, file_path):
 
 
 def generate_launch_description():
-    
     # planning_context
     robot_description_config = xacro.process_file(
         os.path.join(
             get_package_share_directory("pick_place_moveit2"),
             "panda_description/urdf",
             "panda.urdf.xacro",
-        ), mappings={"use_sim": "true"}
+        ), 
     )
-    robot_description = {"robot_description": robot_description_config.toxml()}
+    robot_description = {"robot_description": robot_description_config.toxml(), "use_sim_time": True}
     
     install_dir = get_package_prefix('pick_place_moveit2')
 	
@@ -76,7 +75,7 @@ def generate_launch_description():
     static_tf_robot = Node(
         package="tf2_ros",
         executable="static_transform_publisher",
-        name="static_transform_publisher",
+        name="to_robot",
         output="log",
         arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "panda_link0"],
     )
@@ -84,7 +83,7 @@ def generate_launch_description():
     static_tf_laser = Node(
         package="tf2_ros",
         executable="static_transform_publisher",
-        name="static_transform_publisher",
+        name="to_laser",
         output="log",
         arguments=["0.2", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "hokuyo_link"],
     )
@@ -101,6 +100,10 @@ def generate_launch_description():
             cmd=['gazebo', '--verbose', '-s', 'libgazebo_ros_factory.so'], output='screen',
             env=envs)
 
+    gazebo = ExecuteProcess(
+        cmd=['gazebo', '-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so'],
+        output='screen', env=envs)
+        
     # spawn robot
     spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
                         arguments=['-topic', 'robot_description',
